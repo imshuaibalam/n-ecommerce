@@ -1,0 +1,47 @@
+.card {
+    .img_box {
+      position: relative;
+      .overlay{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(#0000007a, #0000003b);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        .details_box{
+          p{
+              font-size: 15px;
+              font-weight: 600;
+              color: white;
+              letter-spacing: 1.5px;
+          }
+          h1{
+              font-size: 35px;
+              font-weight: 600;
+              color: white;
+              letter-spacing: 2px;
+              margin-bottom: 15px;
+          }
+          button{
+              font-size: 14px;
+              padding-top: 17px;
+              padding-right: 27px;
+              padding-bottom: 17px;
+              padding-left: 27px;
+              background: white;
+              letter-spacing: 1px;
+          }
+          button:hover{
+              transition: all .3s ease-in-out;
+              background: #b08184;
+              color: white;
+          }
+        }
+      }
+    }
+}
+  
