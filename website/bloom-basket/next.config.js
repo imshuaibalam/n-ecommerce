@@ -4,12 +4,6 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'www.zilliondesigns.com',
-            port: '',
-            pathname: '/blog/wp-content/uploads/**',
-          },
-          {
-            protocol: 'https',
             hostname: 'websitedemos.net',
             port: '',
             pathname: '/be-bold-beauty-store-04/wp-content/uploads/sites/**',
