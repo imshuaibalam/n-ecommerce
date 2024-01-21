@@ -26,7 +26,7 @@ const Header = () => {
       <div className='flex items-center px-4 py-6 md:p-6 bg-white text-xl'>
         <div className='flex-1 flex items-center gap-2 font-bold'>
           <FaBars className='md:hidden transition duration-300 hover:text-red-300' onClick={toggleSidemenu}/>
-          <h3>BloomBasket</h3>
+          <Link href='/'><h3>BloomBasket</h3></Link>
         </div>
         <div className='hidden md:flex text-center'>
           <ul className='flex gap-8'>

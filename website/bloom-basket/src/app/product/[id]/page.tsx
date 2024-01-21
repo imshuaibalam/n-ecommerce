@@ -1,8 +1,13 @@
-import CategoryCard from './Components/CategoryCard/CategoryCard'
-import ImageBanner from './Components/ImageBanner/ImageBanner'
-import ProductCard from './Components/ProductCard/ProductCard'
+'use client'
+import React, { useState, useEffect } from 'react';
+import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 
-export default function Page() {
+function Page({ params }: any) {
+  const productId = params.id;
+
+  const [product, setProduct] = useState<any>();
+
   const products = [
     {
       createdAt: new Date(),
@@ -95,52 +100,82 @@ export default function Page() {
     },
   ]
 
-  const categories = [
-    {
-      createdAt: new Date(),
-      name: 'Skin Care',
-      title: 'Skin Care Products',
-      image: {
-        url: 'https://websitedemos.net/beauty-products-store-04/wp-content/uploads/sites/830/2021/04/category-01-free-img.jpg'
-      }
-    },
-    {
-      createdAt: new Date(),
-      name: 'Hair Care',
-      title: 'Hair Care Products',
-      image: {
-        url: 'https://websitedemos.net/beauty-products-store-04/wp-content/uploads/sites/830/2021/04/category-02-free-img.jpg'
-      }
-    },
-    {
-      createdAt: new Date(),
-      name: 'Bath & Body',
-      title: 'Bath & Body Care Products',
-      image: {
-        url: 'https://websitedemos.net/beauty-products-store-04/wp-content/uploads/sites/830/2021/04/category-03-free-img.jpg'
+  const getProductWithId = () => {
+    return products.find(product => product.id === productId);
+  }
+
+  const [imgId, setImgId] = useState(1);
+
+  const slideImage = () => {
+    const imgShowcase:any = document.querySelector('.img-showcase');
+    if (imgShowcase) {
+      const displayWidth = imgShowcase.querySelector('img:first-child')?.clientWidth;
+      if (displayWidth !== undefined) {
+        imgShowcase.style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
       }
     }
-  ]
-  
-  return (
-    <>
-    <ImageBanner link='https://websitedemos.net/be-bold-beauty-store-04/wp-content/uploads/sites/1117/2022/08/hero.jpg'/>
-    <div className="grid grid-cols-2 gap-3 p-3 sm:grid-cols-2 md:grid-cols-4 md:px-5 md:gap-5">
-      {
-        products.map(prod => (
-          <ProductCard product={prod}/>
-        ))
-      }
-    </div>
+  };
 
-    <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-1 md:grid-cols-3 md:px-5 md:gap-5">
-      {
-        categories.map(cat => (
-          <CategoryCard category={cat}/>
-        ))
-      }
-    </div>
-    <ImageBanner link='https://websitedemos.net/be-bold-beauty-store-04/wp-content/uploads/sites/1117/2022/08/bg-03.jpg'/>
-    </>
-  )
+  const nextImage = () => {
+    setImgId((prevId) => (prevId < product.image.length ? prevId + 1 : 1));
+  };
+
+  const prevImage = () => {
+    setImgId((prevId) => (prevId > 1 ? prevId - 1 : product.image.length));
+  };
+  
+  const handleImageClick = (id: number) => {
+    setImgId(id);
+  };
+
+  useEffect(() => {
+    const data:any = getProductWithId();
+    setProduct(data);
+    slideImage();
+  }, [imgId]);
+
+  return (
+    product ? 
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 sm:gap-6 sm:p-10">
+        {/* Product Images Section  */}
+        <div className="flex flex-col justify-center sm:flex-row-reverse sm:gap-2.5">
+          <div className="overflow-hidden relative">
+            <div className="img-showcase flex w-full sm:h-full transition-all duration-1000">
+              {product?.image.map((img: { url: string }, index:any) => (
+                <img key={index} className="min-w-full w-full" src={img.url} alt={`shoe image ${index + 1}`} />
+              ))}
+            </div>
+            <div className='next-btn absolute right-2 top-[50%] translate-y-[-50%] bg-[#ffffff52] p-2.5 rounded-full cursor-pointer'>
+              <IoIosArrowForward onClick={nextImage}/>
+            </div>
+            <div className='back-btn absolute left-2 top-[50%] translate-y-[-50%] bg-[#ffffff52] p-2.5 rounded-full cursor-pointer'>
+              <IoIosArrowBack onClick={prevImage}/>
+            </div>
+          </div>
+          <div className="flex gap-1.5 mt-1.5 sm:mt-0 sm:flex-col">
+            {product?.image.map((img: { url: string }, index:any) => (
+              <div key={index} className="img-item hover:opacity-[0.8]" onClick={() => handleImageClick(index + 1)}>
+                <a href="#" data-id={index + 1}>
+                  <img className="w-full" src={img.url} alt={`shoe image ${index + 1}`} />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Product Images Section  */}
+
+        {/* Product Content Section  */}
+        <div className="product-content px-2 py-5 sm:p-0">
+          <div className="text-gray-400 pb-2.5"><span>Home</span> / <span>Category</span> / <span>Product Name</span></div>        
+          <div className="pb-3"><span>Skin Care</span>, <span>Hair Care</span></div>        
+          <h2 className="text-2xl font-medium pb-2">{product?.name}</h2>
+          <div className='text-xl font-bold'><span className='text-gray-400 line-through'>${product?.price}</span> &nbsp; <span className='text-black'>${product?.discountedPrice}</span></div>
+          <p className='text-gray-400 pt-1'>{product?.description}</p>
+        </div>
+        {/* Product Content Section  */}
+      </div>
+    : <p>Loading...</p>  
+  );
 }
+
+export default Page;

@@ -4,6 +4,8 @@ import Image from 'next/image';
 import style from '@/app/Components/ProductCard/style.module.scss'
 import { GiShoppingBag } from "react-icons/gi";
 import { FaRegHeart } from "react-icons/fa";
+import Link from 'next/link';
+
 
 function ProductCard(props:any) {
     const { product } = props;
@@ -15,15 +17,17 @@ function ProductCard(props:any) {
     return (
         <div className={style.card}>
             <div className={style.img_box}>
-                <Image
-                src={product.image[0].url} 
-                alt='Bloom Basket product image'
-                height={100}
-                width={100}
-                sizes='100vw'
-                className='w-full'
-                priority
-                />
+                <Link href={`/product/${product.id}`}>
+                    <Image
+                    src={product.image[0].url} 
+                    alt='Bloom Basket product image'
+                    height={100}
+                    width={100}
+                    sizes='100vw'
+                    className='w-full'
+                    priority
+                    />
+                </Link>
                 <p className={style.sale_badge}>Sale!</p>
                 <div className={style.cart_wishlist_box}>
                     <div onClick={addToCart} className={style.cart_icon}><GiShoppingBag /></div>
